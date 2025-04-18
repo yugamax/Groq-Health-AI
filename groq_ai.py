@@ -23,8 +23,6 @@ app.add_middleware(
 class UserMessage(BaseModel):
     msg : str
 
-chat_hist= [{"role": "system", "content": "You are a smart AI doctor."}]
-
 @app.api_route("/ping", methods=["GET", "HEAD"])
 async def ping():
     await asyncio.sleep(0.1)
@@ -32,6 +30,8 @@ async def ping():
 
 @app.post("/chat")
 async def chat_with_doctor(ui: UserMessage):
+    chat_hist= [{"role": "system", "content": "You are a smart AI doctor."}]
+    
     ui = ui.msg
     if ui.lower() in ["bye", "exit", "quit"]:
         return {"response": "Bye"}
