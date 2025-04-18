@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Groq AI Chatbot</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    .chat-container {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .message {
+      max-width: 70%;
+      padding: 0.8rem 1rem;
+      margin-bottom: 10px;
+      border-radius: 15px;
+      line-height: 1.4;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    .user {
+      align-self: flex-end;
+      background-color: #007bff;
+      color: white;
+      border-bottom-right-radius: 0;
+    }
+
+    .bot {
+      align-self: flex-start;
+      background-color: #e0e0e0;
+      color: #333;
+      border-bottom-left-radius: 0;
+    }
+
+    .input-area {
+      display: flex;
+      padding: 0.5rem;
+      background: white;
+      border-top: 1px solid #ccc;
+    }
+
+    #messageInput {
+      flex: 1;
+      padding: 0.7rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      resize: none;
+      font-size: 1rem;
+    }
+
+    button {
+      margin-left: 0.5rem;
+      padding: 0 1rem;
+      font-size: 1rem;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    @media screen and (max-width: 600px) {
+      .message {
+        max-width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container" id="chat"></div>
+  <div class="input-area">
+    <textarea id="messageInput" rows="1" placeholder="Type your message..."></textarea>
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <script>
+    const chatContainer = document.getElementById('chat');
+    const messageInput = document.getElementById('messageInput');
+
+    function appendMessage(content, sender) {
+      const div = document.createElement('div');
+      div.classList.add('message', sender);
+      div.textContent = content;
+      chatContainer.appendChild(div);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    async function sendMessage() {
+      const msg = messageInput.value.trim();
+      if (!msg) return;
+
+      appendMessage(msg, 'user');
+      messageInput.value = '';
+      try {
+        const res = await fetch('https://groq-chatbot-wsct.onrender.com/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ msg })
+        });
+        const data = await res.json();
+        appendMessage(data.response || 'Something went wrong!', 'bot');
+      } catch (err) {
+        appendMessage('Error: Could not reach server', 'bot');
+      }
+    }
+
+    // Intro message from Dr. Groq on first load
+    function fetchIntro() {
+      const intro = "👋 Hello! I'm Dr. Groq, your friendly AI doctor 🤖. I'm here to help you with your health-related questions. What can I assist you with today?";
+      appendMessage(intro, 'bot');
+    }
+
+    // Trigger intro on load
+    window.addEventListener('load', fetchIntro);
+
+    // Handle "Enter" to send message
+    messageInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+  </script>
+</body>
+</html>
