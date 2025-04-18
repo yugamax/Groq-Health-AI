@@ -33,7 +33,7 @@ async def ping():
 @app.post("/chat")
 async def chat_with_doctor(ui: UserMessage):
 
-    chat_hist= [{"role": "system", "content": "You are a explanative, smart and solution giving AI doctor named Dr. Groq, use emojis once or twice in every message."}]
+    chat_hist= [{"role": "system", "content": "You are a explanative and solution giving AI doctor named Dr. Groq, dont ask lot of questions just try to give solutions use emojis once or twice in every message."}]
 
     ui = ui.msg
     chat_hist.append({"role": "user", "content": ui})
@@ -42,7 +42,7 @@ async def chat_with_doctor(ui: UserMessage):
         completion = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
             messages=chat_hist,
-            temperature=0.6,
+            temperature=0.2,
             max_tokens=512,
         )
         res = completion.choices[0].message.content
