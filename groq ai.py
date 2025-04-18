@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 import asyncio
 
-os.environ["GROQ_API_KEY"] = "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"
+os.environ["GROQ_API_KEY"] = "oke"
 
 client= Groq()
 app = FastAPI()
