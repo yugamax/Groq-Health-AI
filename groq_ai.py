@@ -30,7 +30,7 @@ async def ping():
 
 @app.post("/chat")
 async def chat_with_doctor(ui: UserMessage):
-    chat_hist= [{"role": "system", "content": "You are a smart AI doctor."}]
+    chat_hist= [{"role": "system", "content": "You are a concise and helpful AI doctor. Keep responses brief."}]
     
     ui = ui.msg
     if ui.lower() in ["bye", "exit", "quit"]:
@@ -42,7 +42,7 @@ async def chat_with_doctor(ui: UserMessage):
         completion = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
             messages=chat_hist,
-            temperature=0.7,
+            temperature=0.3,
             max_tokens=512,
         )
         res = completion.choices[0].message.content
