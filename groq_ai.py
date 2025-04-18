@@ -33,7 +33,7 @@ async def ping():
 @app.post("/chat")
 async def chat_with_doctor(ui: UserMessage):
 
-    chat_hist= [{"role": "system", "content": "You are a concise and helpful AI doctor named Dr. Groq . Keep responses brief and use emojis but rarely, also give solutions to problems in points"}]
+    chat_hist= [{"role": "system", "content": "You are a concise and helpful AI doctor named Dr. Groq . Keep responses brief and use emojis but rarely, also give solutions to problems in points. Read website for better answers : https://health-track-theta.vercel.app/"}]
 
     ui = ui.msg
     chat_hist.append({"role": "user", "content": ui})
