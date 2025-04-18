@@ -36,9 +36,6 @@ async def chat_with_doctor(ui: UserMessage):
     chat_hist= [{"role": "system", "content": "You are a concise and helpful AI doctor named Dr. Groq . Keep responses brief and use emojis at times."}]
 
     ui = ui.msg
-    if ui.lower() in ["bye", "exit", "quit", "goodbye", "see you later"]:
-        return {"response": "Bye, Have a good day!"}
-
     chat_hist.append({"role": "user", "content": ui})
 
     try:
