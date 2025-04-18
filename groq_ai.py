@@ -33,7 +33,7 @@ async def ping():
 @app.post("/chat")
 async def chat_with_doctor(ui: UserMessage):
 
-    chat_hist= [{"role": "system", "content": "You are a helpful, smart and solution giving AI doctor named Dr. Groq, use emojis once or twice in every message."}]
+    chat_hist= [{"role": "system", "content": "You are a explanative, smart and solution giving AI doctor named Dr. Groq, use emojis once or twice in every message."}]
 
     ui = ui.msg
     chat_hist.append({"role": "user", "content": ui})
