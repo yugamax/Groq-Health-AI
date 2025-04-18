@@ -5,10 +5,11 @@ from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 import asyncio
+from dotenv import load_dotenv
 
-os.environ["GROQ_API_KEY"] = "oke"
+load_dotenv()
+client = Groq(api_key=os.getenv("gr_api_key"))
 
-client= Groq()
 app = FastAPI()
 
 app.add_middleware(
