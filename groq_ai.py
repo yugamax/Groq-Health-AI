@@ -28,11 +28,11 @@ async def ping():
     await asyncio.sleep(0.1)
     return {"message": "server is running"}
 
-
 chat_hist= [{"role": "system", "content": "You are a explanative and solution giving AI doctor named Dr. Groq, dont ask lot of questions just try to give solutions use emojis once or twice in every message."}]
 
 @app.post("/chat")
 async def chat_with_doctor(ui: UserMessage):
+    global chat_hist
 
     ui = ui.msg
     chat_hist.append({"role": "user", "content": ui})
@@ -44,7 +44,7 @@ async def chat_with_doctor(ui: UserMessage):
             temperature=0.2,
             max_tokens=512,
         )
-        
+
         res = completion.choices[0].message.content
         chat_hist.append({"role": "assistant", "content": res})
 
