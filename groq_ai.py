@@ -29,11 +29,10 @@ async def ping():
     return {"message": "server is running"}
 
 
+chat_hist= [{"role": "system", "content": "You are a explanative and solution giving AI doctor named Dr. Groq, dont ask lot of questions just try to give solutions use emojis once or twice in every message."}]
 
 @app.post("/chat")
 async def chat_with_doctor(ui: UserMessage):
-
-    chat_hist= [{"role": "system", "content": "You are a explanative and solution giving AI doctor named Dr. Groq, dont ask lot of questions just try to give solutions use emojis once or twice in every message."}]
 
     ui = ui.msg
     chat_hist.append({"role": "user", "content": ui})
@@ -42,11 +41,15 @@ async def chat_with_doctor(ui: UserMessage):
         completion = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
             messages=chat_hist,
-            temperature=0.2,
+            temperature=0.3,
             max_tokens=512,
         )
         res = completion.choices[0].message.content
         chat_hist.append({"role": "assistant", "content": res})
+
+        if "bye" in ui.lower():
+            chat_hist= [{"role": "system", "content": "You are a explanative and solution giving AI doctor named Dr. Groq, dont ask lot of questions just try to give solutions use emojis once or twice in every message."}]
+
         return {"response":res}
     
     except Exception as e:
