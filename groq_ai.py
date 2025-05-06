@@ -44,6 +44,7 @@ async def chat_with_doctor(ui: UserMessage):
             temperature=0.2,
             max_tokens=512,
         )
+        
         res = completion.choices[0].message.content
         chat_hist.append({"role": "assistant", "content": res})
 
