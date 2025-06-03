@@ -48,13 +48,15 @@ async def chat_with_doctor(ui: UserMessage):
         res = completion.choices[0].message.content
         chat_hist.append({"role": "assistant", "content": res})
 
-        if "bye" in ui.lower():
-            chat_hist= [{"role": "system", "content": "You are a explanative and solution giving AI doctor named Dr. Groq, dont ask lot of questions just try to give solutions use emojis once or twice in every message."}]
-
         return {"response":res}
     
     except Exception as e:
         return {"error": str(e)}
+
+@app.on_event("shutdown")
+def shutdown_event():
+    print("Cleaning up memory")
+    chat_hist.clear()
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
